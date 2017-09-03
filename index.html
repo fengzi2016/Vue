@@ -5,13 +5,55 @@
 	<title>vue_todo</title>
 </head>
 <script src="https://unpkg.com/vue"></script>
+<style type="text/css">
+	.active{
+		text-decoration:line-through
+	}
+</style>
 <body>
-	
-	
+<div id="gyf_todo_example">
+	<input v-model='newTodoText' v-on:keyup.enter='addNewTodo' placeholder="what do you need to do?">
+	<ul>
+		<li is='todo'  v-for='(todo,index) in todos' v-bind:class="{ active:todo.isActive }" v-bind:key='todo.id' v-bind:title='todo.title' v-on:remove='todos.splice(index,1)' v-on:done='alreadyDone(todo.id)' ></li>
+	</ul>
+</div>	
 </body>
 <script>
-
-
+Vue.component('todo',{
+ template:`
+  <li>
+    <button v-on:click="$emit('done')">Done</button>
+		{{title}} 
+	<button v-on:click="$emit('remove')">X</button>
+  </li>`,
+  props:['title'],
+})
+new Vue({
+	el:'#gyf_todo_example',
+	data:{
+		todos:[],
+		newTodoText:'',
+		nextTodoId:1,
+	},
+	methods:{
+		addNewTodo:function(){
+			this.todos.push({
+				id:this.nextTodoId++,
+				title:this.newTodoText,
+				isActive:false
+			});
+			this.newTodoText='';
+		},
+		alreadyDone:function(key){
+			console.log('done');
+			let todo=this.todos.filter(function(value){
+				return value.id===key;
+			})[0];
+			let index=this.todos.indexOf(todo);
+			this.todos[index].isActive=true;
+		}
+	}
+})
 </script>
 
 </html>

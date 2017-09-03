@@ -15,6 +15,27 @@ v-show='ok' 即使ok的值为false，div也会被渲染，也会存在于DOM中�
 v-on:onclick='doSomething' 缩写 <a @click="doSomething"></a> doSomething为JS表达式 监听DOM事件,如:click,blur,focus
 可以使用js表达式 如{{ number + 1 }},<div v-bind:id="'list-' + id"></div>
 . 为修饰符 .prevent 防止默认事件 如<form v-on:submit.prevent="onSubmit"></form>防止提交后刷新 -->
-
+<div id="editor">
+	<textarea :value='input' @input='update'></textarea>
+	<div v-html='compliedMarkdown'></div>
+</div>
 </body>
+<script>
+	new Vue({
+		el:'#editor',
+		data:{
+			input:'#hello'
+		},
+		computed:{
+			compliedMarkdown:function(){
+				return marked(this.input,{sanitize:true})
+			}
+		},
+		methods:{
+			update:_.debounce(function(e){
+				this.input=e.target.value
+			},300)
+		}
+	})
+</script>
 </html>
