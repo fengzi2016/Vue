@@ -9,18 +9,35 @@
 	.active input {
 		text-decoration: line-through
 	}
+	.todo_all{
+		margin-top: 10%;
+		margin-left: 30%;
+		margin-right: 30%;
+		background-color: goldenrod;
+	}
+	.todo_title{
+		text-align: center;
+		font-size:5em;
+	}
+	.todo_input{
+		margin-left: 5%;
+		width: 90%;
+		font-family: Helvetica;
+		font-size: 3em;
+	}
 </style>
 
 <body>
-	<div>
+	<div class="todo_all">
+		<div class="todo_title">todos</div>
 		<div id="gyf_todo_example">
-			<input v-model='newTodoText' v-on:keyup.enter='addNewTodo' placeholder="what do you need to do?">
+			<input  class='todo_input' v-model='newTodoText' v-on:keyup.enter='addNewTodo' placeholder="what do you need to do?">
 			<ul>
 				<li is='todo' v-for='(todo,index) in todos' v-bind:class="{ active:todo.isActive }" v-bind:key='todo.id' v-bind:title='todo.title' v-bind:acti='todo.isActive'
 				 v-on:remove='removeText(todo.id,index)' v-on:done='alreadyDone(index)' v-on:no-done='noDone(index)'></li>
 			</ul>
 			<fina :number='lefNum'  v-bind:todos='todos' :times='time' v-on:all='allArr'  @activel='activeArr'  @completed='completedArr'></fina>
-			<!--   -->
+	</div>
 	</div>
 </body>
 <script>
@@ -37,7 +54,7 @@
 		},
         computed:{
             changeStatus:function(){
-                console.log(this.checked);
+               // console.log(this.checked);
                 if(this.checked===true){
                     this.$emit('done');
                 }else{
@@ -78,7 +95,7 @@
 					title: this.newTodoText,
 					isActive: false
 				});
-				this.todos=this.baseArr.concat();
+				this.todos=this.baseArr;
 				this.newTodoText = '';
 				this.time++;
 			},

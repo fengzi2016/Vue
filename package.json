@@ -1,0 +1,22 @@
+{
+  "name": "vue",
+  "version": "1.0.0",
+  "description": "用Vue做一个TODO",
+  "main": "vue_todo",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fengzi2016/Vue.git"
+  },
+  "author": "fengzi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fengzi2016/Vue/issues"
+  },
+  "homepage": "https://github.com/fengzi2016/Vue#readme",
+  "dependencies": {
+    "magic-check": "^1.0.3"
+  }
+}
