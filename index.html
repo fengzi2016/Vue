@@ -7,53 +7,58 @@
 <script src="https://unpkg.com/vue"></script>
 <link rel="stylesheet" href="node_modules/magic-check/css/magic-check.css">
 <style type="text/css">
-*{
-	color: #212121;
-}
-	
+	* {
+		color: #212121;
+	}
+
 	.active input {
 		text-decoration: line-through;
 		background-color: #BDBDBD;
 		color: #757575;
 	}
-	.todo_all{
+
+	.todo_all {
 		margin-top: 10%;
 		margin-left: 30%;
 		margin-right: 30%;
 		background-color: #BBDEFB;
 	}
-	.todo_title{
+
+	.todo_title {
 		text-align: center;
-		font-size:5em;
+		font-size: 5em;
 		color: white;
 	}
-	.todo_input{
+
+	.todo_input {
 		margin-left: 5%;
 		width: 90%;
 		font-family: Helvetica;
 		font-size: 3em;
 	}
-	ul{
+
+	ul {
 		list-style: none;
-		
 	}
-	ul li input{
+
+	ul li input {
 		font-size: 1.5em;
 	}
-	
 </style>
 
 <body>
 	<div class="todo_all">
 		<div class="todo_title">todos</div>
 		<div id="gyf_todo_example">
-			<input  class='todo_input' v-model='newTodoText' v-on:keyup.enter='addNewTodo' placeholder="what do you need to do?">
+			<input class='todo_input' v-model='newTodoText' v-on:keyup.enter='addNewTodo' placeholder="what do you need to do?">
 			<ul>
-				<li is='todo' v-for='(todo,index) in todos' v-bind:class="{ active:todo.isActive }" v-bind:key='todo.id' v-bind:id='todo.id' v-bind:title='todo.title' v-bind:acti='todo.isActive'
-				 v-on:remove='removeText(todo.id,index)' v-on:done='alreadyDone(index)' v-on:no-done='noDone(index)'></li>
+				<li is='todo' v-for='(todo,index) in todos' v-bind:class="{ active:todo.isActive }" v-bind:key='todo.id' v-bind:id='todo.id'
+				 v-bind:title='todo.title' v-bind:acti='todo.isActive' v-on:remove='removeText(todo.id,index)' v-on:done='alreadyDone(index)'
+				 v-on:no-done='noDone(index)'></li>
 			</ul>
-			<fina :number='lefNum'  v-bind:todos='todos' :times='time' v-on:all='allArr'  @activel='activeArr'  @completed='completedArr' @clear='clearCompleted'></fina>
-	</div>
+			<fina :number='lefNum' v-bind:todos='todos' :times='time' v-on:all='allArr' @activel='activeArr' @completed='completedArr'
+			 @clear='clearCompleted'></fina>
+		</div>
 	</div>
 </body>
 <script>
@@ -66,26 +71,19 @@
 	<button v-show='isOn' v-on:click="$emit('remove')">X</button>
 </label>
   </li>`,
-		props: ['title','acti','id'],
+		props: ['title', 'acti', 'id'],
 		data: function () {
-			return { newText: this.title,checked:this.acti,ID :this.id,isOn:false};
+			return { newText: this.title, checked: this.acti, ID: this.id, isOn: false };
 		},
-        computed:{
-            changeStatus:function(){
-                if(this.checked===true){
-                    this.$emit('done');
-                }else{
-                    this.$emit('no-done');
-                }
-            }
-        }
-		// methods:{
-		// 	isfocus:function(){
-		// 		 this.isOn=true;
-		// 		 console.log(this.isOn);
-		// 		 return this.isOn;
-		// 	}
-		// }
+		computed: {
+			changeStatus: function () {
+				if (this.checked === true) {
+					this.$emit('done');
+				} else {
+					this.$emit('no-done');
+				}
+			}
+		}
 	})
 	Vue.component('fina', {
 		template: `	
@@ -97,14 +95,14 @@
 		<button v-if='clear' v-on:click="$emit('clear')">Clear completed</button>
 		</div>
 		`,
-		props: ['number','times','todos'],
-		computed:{
+		props: ['number', 'times', 'todos'],
+		computed: {
 			exist: function () {
-				return this.times!==0;
+				return this.times !== 0;
 			},
-			clear:function(){
-				let alreadyNum=this.todos.length-this.number;
-				return alreadyNum!==0;
+			clear: function () {
+				let alreadyNum = this.todos.length - this.number;
+				return alreadyNum !== 0;
 			}
 		}
 	})
@@ -114,8 +112,8 @@
 			todos: [],
 			newTodoText: '',
 			nextTodoId: 1,
-			time:0,
-			baseArr:[]
+			time: 0,
+			baseArr: []
 		},
 		methods: {
 			addNewTodo: function () {
@@ -124,59 +122,59 @@
 					title: this.newTodoText,
 					isActive: false
 				});
-				this.todos=this.baseArr;
+				this.todos = this.baseArr;
 				this.newTodoText = '';
 				this.time++;
 			},
 			alreadyDone: function (index) {
 				this.todos[index].isActive = true;
 			},
-            noDone: function(index){
-                this.todos[index].isActive = false;
-            },
-            removeText:function(key,ind){
-                // this.todos.splice(ind,1);
-                let baseTodo = this.baseArr.filter(function (value) {
+			noDone: function (index) {
+				this.todos[index].isActive = false;
+			},
+			removeText: function (key, ind) {
+				// this.todos.splice(ind,1);
+				let baseTodo = this.baseArr.filter(function (value) {
 					return value.id === key;
 				})[0];
 				let index = this.baseArr.indexOf(baseTodo);
-				this.baseArr.splice(index,1);
-				return this.todos=this.baseArr;
-            },
+				this.baseArr.splice(index, 1);
+				return this.todos = this.baseArr;
+			},
 			allArr: function () {
-				return this.todos =this.baseArr;
+				return this.todos = this.baseArr;
 			},
 			activeArr: function () {
-				return this.todos =this.baseArr.filter(function (value) {
+				return this.todos = this.baseArr.filter(function (value) {
 					return value.isActive === false;
 				});
 			},
-            completedArr: function () {
+			completedArr: function () {
 				return this.todos = this.baseArr.filter(function (element) {
 					return element.isActive === true;
 				});
 			},
-			clearCompleted:function(){
-				let changeArr=[];
-				for(let index in this.todos){
-					if(this.todos[index].isActive===false){
+			clearCompleted: function () {
+				let changeArr = [];
+				for (let index in this.todos) {
+					if (this.todos[index].isActive === false) {
 						changeArr.push(this.todos[index]);
 					}
 				}
-				this.baseArr=changeArr;
-				this.todos=this.baseArr;
+				this.baseArr = changeArr;
+				this.todos = this.baseArr;
 				return this.todos;
 			}
 		},
-		computed: {		
+		computed: {
 			lefNum: function () {
-				let leftArr =this.todos.filter(function (value) {
+				let leftArr = this.todos.filter(function (value) {
 					return value.isActive === false;
 				});
 				return leftArr.length;
 			},
-			
-				
+
+
 		}
 
 	});
