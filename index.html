@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 	<title>vue_todo</title>
 </head>
@@ -10,7 +9,7 @@
 	* {
 		color: #212121;
 	}
-
+	
 	.active input {
 		text-decoration: line-through;
 		background-color: #BDBDBD;
@@ -89,14 +88,14 @@
 	/*生成底部提示和按钮*/
 	Vue.component('fina', {
 		template: `	
-					<div v-if='exist' >
-					<div style="float:left">{{number}} item left</div>
-					<button style="margin-left:20%"@click="$emit('all')">All</button>
-					<button @click="$emit('activel')">Active</button>
-					<button @click="$emit('completed')">Completed</button>
-					<button v-if='clear' @click="$emit('clear')">Clear completed</button>
-					</div>
-					`,
+				<div v-if='exist' >
+				<div style="float:left">{{number}} item left</div>
+				<button style="margin-left:20%"@click="$emit('all')">All</button>
+				<button @click="$emit('activel')">Active</button>
+				<button @click="$emit('completed')">Completed</button>
+				<button v-if='clear' @click="$emit('clear')">Clear completed</button>
+				</div>
+				`,
 		props: ['number', 'times', 'todos'],/*times用作在判断是否是输入过text，如果输入过text，则筛选过后即使没有<todo>,也有底部提示和按钮,如果没输入则没有底部<fina>*/
 		computed: {
 			exist: function () {
