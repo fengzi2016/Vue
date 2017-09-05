@@ -50,26 +50,27 @@
 	<div class="todo_all">
 		<div class="todo_title">todos</div>
 		<div id="gyf_todo_example">
-			<input class='todo_input' v-model='newTodoText' v-on:keyup.enter='addNewTodo' placeholder="what do you need to do?">
+			<input class='todo_input' v-model='newTodoText' @keyup.enter='addNewTodo' placeholder="what do you need to do?">
 			<ul>
-				<li is='todo' v-for='(todo,index) in todos' v-bind:class="{ active:todo.isActive }" v-bind:key='todo.id' v-bind:id='todo.id'
-				 v-bind:title='todo.title' v-bind:acti='todo.isActive' v-on:remove='removeText(todo.id,index)' v-on:done='alreadyDone(index)'
-				 v-on:no-done='noDone(index)'></li>
+				<li is='todo' v-for='(todo,index) in todos' :class="{ active:todo.isActive }" :key='todo.id' :id='todo.id'
+				 :title='todo.title' :acti='todo.isActive' @remove='removeText(todo.id,index)' @done='alreadyDone(index)'
+				 @no-done='noDone(index)'></li>
 			</ul>
-			<fina :number='lefNum' v-bind:todos='todos' :times='time' v-on:all='allArr' @activel='activeArr' @completed='completedArr'
+			<fina :number='lefNum' :todos='todos' :times='time' @all='allArr' @activel='activeArr' @completed='completedArr'
 			 @clear='clearCompleted'></fina>
 		</div>
 	</div>
 </body>
 <script>
+	/*生成todo_text*/
 	Vue.component('todo', {
 		template: `
   <li>
     <input type="checkbox" class="magic-checkbox" v-model="checked" :status='changeStatus' name="layout" :id="ID">
 	<label :for="ID">
-	<input v-model='newText' v-on:mouseover="isOn = !isOn">
-	<button v-show='isOn' v-on:click="$emit('remove')">X</button>
-</label>
+	<input v-model='newText' @mouseover="isOn = !isOn">
+	<button v-show='isOn' @click="$emit('remove')">X</button>
+	</label>
   </li>`,
 		props: ['title', 'acti', 'id'],
 		data: function () {
@@ -85,17 +86,18 @@
 			}
 		}
 	})
+	/*生成底部提示和按钮*/
 	Vue.component('fina', {
 		template: `	
 		<div v-if='exist' >
 		<div style="float:left">{{number}} item left</div>
-		<button style="margin-left:20%"v-on:click="$emit('all')">All</button>
-		<button v-on:click="$emit('activel')">Active</button>
-     	<button v-on:click="$emit('completed')">Completed</button>
-		<button v-if='clear' v-on:click="$emit('clear')">Clear completed</button>
+		<button style="margin-left:20%"@click="$emit('all')">All</button>
+		<button @click="$emit('activel')">Active</button>
+     	<button @click="$emit('completed')">Completed</button>
+		<button v-if='clear' @click="$emit('clear')">Clear completed</button>
 		</div>
 		`,
-		props: ['number', 'times', 'todos'],
+		props: ['number', 'times', 'todos'],/*times用作在判断是否是输入过text，如果输入过text，则筛选过后即使没有<todo>,也有底部提示和按钮,如果没输入则没有底部<fina>*/
 		computed: {
 			exist: function () {
 				return this.times !== 0;
@@ -106,6 +108,7 @@
 			}
 		}
 	})
+	/*baseArr是所有的todos内容，在按All按钮以及筛选的时候发挥作用，todos是展现内容，通过对baseArr的筛选改变todos后,展现出满足条件的<todo>*/
 	let text = new Vue({
 		el: '#gyf_todo_example',
 		data: {
@@ -133,7 +136,6 @@
 				this.todos[index].isActive = false;
 			},
 			removeText: function (key, ind) {
-				// this.todos.splice(ind,1);
 				let baseTodo = this.baseArr.filter(function (value) {
 					return value.id === key;
 				})[0];
@@ -173,12 +175,8 @@
 				});
 				return leftArr.length;
 			},
-
-
 		}
-
 	});
 
 </script>
-
 </html>
