@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>transitions</title>
+</head>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
+<body>
+<div id='list-demo'>
+    <input v-model='input_text'>
+    <transition-group
+        name='fade'
+        tag='ul'
+        v-bind:css='false'
+        v-on:before-enter='beforeEnter'
+        v-on:enter='enter'
+        v-on:leave='leave'>
+        <li 
+            v-for='(item,index) in computedList'
+            v-bind:key='item.msg'
+            v-bind:data-index='index'>
+            {{item.msg}}</li>
+    </transition-group>
+</div>
+</body>
+<script>
+        new Vue({
+            el:'#list-demo',
+            data:{
+                input_text:'',
+                list:[
+                    { msg: 'Bruce Lee' },
+                    { msg: 'Jackie Chan' },
+                    { msg: 'Chuck Norris' },
+                    { msg: 'Jet Li' },
+                    { msg: 'Kung Fury' }
+                     ]
+            },
+            computed:{
+                computedList:function(){
+                    let vm=this;
+                    return this.list.filter(function(item){
+                        return item.msg.toLowerCase().indexOf(vm.input_text.toLowerCase())!==-1
+                    })
+                }
+            },
+            methods:{
+                beforeEnter:function(el){
+                    el.style.opacity=0;
+                    el.style.height=0;
+                },
+                enter:function(el,done){
+                    let delay=el.dataset.index*150;
+                    setTimeout(function(){
+                        Velocity(el,{opacity:1,height:'1.6em'},{complete:done})},delay)
+                    },
+                leave:function(el,done){
+                    let delay=el.dataset.index*150;
+                    setTimeout(function(){
+                        Velocity(el,{opacity:0,height:0},{complete:done})
+                    },delay)
+                
+                }
+            }
+        })
+        /*Velocity(el,{opacity:1,height:'1.6em'},{complete:done})},delay)
+       1. complete:done ???
+       2. 各个方法的参数：默认第一个Dom原生事件，第二个是什么？【 如果改变原生事件位置，则html里形参这样写：$event】
+       3. this.items = _.shuffle(this.items) _.()是什么？
+        */
+    </script>
+
+</html>
