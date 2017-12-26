@@ -34,7 +34,39 @@
     </form>
 </div>
 <script>
-    Vue.componenet
+    Vue.component('demo-grid',{
+        template: '#grid- template',
+        props:{
+            data: Array,
+            columns: Array,
+            filterKey: String
+        },
+        data: function(){
+            var sortOrders = {};
+            this.columns.forEach(key => {
+                sortOrders[key] = 1;
+            });
+            return {
+                sortKey: '',
+                sortOrder: sortOrders
+            }
+        },
+        computed: {
+            filteredData: function(){
+                var sortKey = this.sortKey;
+                var filterKey = this.filterKey && this.filterKey.toLowerCase();
+                var order = this.sortOrder[sortKey] || 1;
+                var data = this.data;
+                if(filterKey){
+                    data = data.filter(function(row){
+                        return Object.keys(row).some(function(key){
+                            return String(row[key]).toLowerCase().indexOf(filterKey)>-1;
+                        })
+                    })
+                }
+            }
+        }
+    })
 </script>
 <body>
     
